@@ -1,0 +1,52 @@
+{
+  "source": "160轨道采集器.txt",
+  "blueprint_version": 2,
+  "building_count": 160,
+  "area": {
+    "index": 0,
+    "segments": 80,
+    "width": 396,
+    "height": 25
+  },
+  "orbit_radius": 220.2001,
+  "real_radius": 200.0,
+  "grid_deg": 0.9,
+  "rings": [
+    {
+      "lat_deg": -0.0,
+      "count": 40,
+      "start_lon_deg": 0.0,
+      "step_deg": 9.0,
+      "circumference": 1383.558,
+      "neighbour_distance": 34.553
+    },
+    {
+      "lat_deg": 7.2,
+      "count": 40,
+      "start_lon_deg": 4.5,
+      "step_deg": 9.0,
+      "circumference": 1372.648,
+      "neighbour_distance": 34.281
+    },
+    {
+      "lat_deg": 14.4,
+      "count": 40,
+      "start_lon_deg": 0.0,
+      "step_deg": 9.0,
+      "circumference": 1340.091,
+      "neighbour_distance": 33.468
+    },
+    {
+      "lat_deg": 21.6,
+      "count": 40,
+      "start_lon_deg": 4.5,
+      "step_deg": 9.0,
+      "circumference": 1286.4,
+      "neighbour_distance": 32.127
+    }
+  ],
+  "nn_min": 32.127,
+  "nn_max": 32.577,
+  "nn_mean": 32.323,
+  "ring_gap_min": 32.154
+}
