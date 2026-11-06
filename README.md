@@ -4,6 +4,8 @@
 
 A ready-to-paste blueprint plus the arithmetic that shows *why* 160 orbital collectors fit on a single gas giant: **4 rings × 40 collectors**, captured in Dyson Sphere Program **0.10.35**.
 
+> **40 is not the limit.** Four rings fit on one gas giant — here is the blueprint, the geometry proof, and what those 160 collectors actually produce.
+
 | | |
 |---|---|
 | Collectors | **160** (item `2105`, model `117`) |
@@ -134,6 +136,26 @@ and the whole shell becomes almost perfectly uniform — every collector is betw
 all at r = 220.2          → one orbital shell, no vertical interference
 latitude span             = 0.0° … 21.6° (25 cells of the paste box)
 ```
+
+### 4.6 What those 160 collectors actually produce
+
+The engine derives a collector's output from the giant's own gas table (`PlanetTransport.cs`, `isCollectStation` branch):
+
+```
+perCollectorPerTick = gasSpeeds[i] / 60 × stationCollectSpeed × efficiency
+efficiency          = 1 − workEnergyPerTick / (stationCollectSpeed × gasTotalHeat / 60)
+```
+
+`stationCollectSpeed` is 1 for the orbital collector, and the efficiency term sits at ≈ 1 on any giant with a normal heat output. The planet panel in-game reports `gasSpeeds` itself — i.e. **the per-collector rate**.
+
+This giant (御夫座 6 - 5) reports **hydrogen 1.2275/s** and **deuterium 0.0510/s**:
+
+| | 1 collector | 1 ring (40) | 4 rings (160) |
+|---|---|---|---|
+| Hydrogen | 1.2275 /s | 49.1 /s — 2,946 /min | **196.4 /s — 11,784 /min** |
+| Deuterium | 0.0510 /s | 2.04 /s — 122 /min | **8.16 /s — 490 /min** |
+
+Each ring is a clean quarter of the shell, so the fourth ring is not cosmetic — it is 25 % of the giant's output. A single ordinary giant becomes a ~11.8 k hydrogen/min and ~490 deuterium/min source.
 
 ---
 
