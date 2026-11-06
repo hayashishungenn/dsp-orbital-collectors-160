@@ -14,6 +14,10 @@
 | 蓝图区域 | 1 个区域，396 × 25 格，80 个经度段 |
 | 文件 | [`blueprints/160_orbital_collectors.txt`](blueprints/160_orbital_collectors.txt) |
 
+![实机：气巨星上的 160 台采集器](docs/img/ingame-gas-giant.jpg)
+
+*实机粘贴后的气巨星（御夫座 6 - 5 号星）：四圈采集器沿赤道铺开；半透明的那些还在无人机施工（预建造）阶段。*
+
 ---
 
 ## 一、前置条件
@@ -170,15 +174,17 @@ blueprints/160_orbital_collectors.txt   蓝图本体（游戏原样导出）
 data/positions.csv                      160 台的圈号、经纬度、单位向量、xyz
 data/rings.json                         解析汇总（区域、每圈统计、间距）
 tools/analyze_blueprint.py              解析 + 几何报告，仅用标准库
+docs/img/ingame-gas-giant.jpg           实机截图（摆放证明）
 README.md                               英文说明
 README.zh-CN.md                         本文件
 ```
 
 ## 七、说明与边界
 
-* 这个文件是从**真实存档里原样复制出来的**——那 160 台当时就立在气巨星上，所以它既是纸面计算也是实测。那份存档带 mod；纯原版能否接受四圈布局，这里**没有**单独验证。最坏情况是粘贴时报错、不消耗任何材料。
+* **已实机验证**：文件取自真实存档，并在 0.10.35 里重新贴回气巨星（御夫座 6 - 5）——顶部那张截图就是结果：160 台分四圈立住了。
+* BlueprintTweaks 是**必需项，不是可选项**。引擎本身禁止在气巨星贴蓝图（`planet.gasItems != null` → `EBuildCondition.Failure`），请保持 `bpOnGasGiants = true`。
 * 社区 wiki 至今写着"只能放赤道、每颗最多 40 台"。请把那句理解成"单圈朴素摆法"，而不是引擎上限——本仓库的文件已经证明四圈摆得下。
-* 务必保持 `bpOnGasGiants = true`，否则游戏会直接拒绝粘贴并给一个笼统的失败提示。
+* 160 台的轨道半径都是 220.2，全部同层，不存在上下堆叠或互相遮挡。
 
 ## 许可
 

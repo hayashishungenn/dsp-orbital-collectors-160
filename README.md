@@ -14,6 +14,10 @@ A ready-to-paste blueprint plus the arithmetic that shows *why* 160 orbital coll
 | Blueprint area | 1 area, 396 × 25 cells, 80 longitude segments |
 | File | [`blueprints/160_orbital_collectors.txt`](blueprints/160_orbital_collectors.txt) |
 
+![160 orbital collectors in game on a gas giant](docs/img/ingame-gas-giant.jpg)
+
+*In game right after pasting — gas giant 御夫座 6 - 5 (Auriga 6-5), four rings of collectors around the equator. The translucent ones are still in the drone-construction (prebuild) stage.*
+
 ---
 
 ## 1. Requirements
@@ -170,15 +174,17 @@ blueprints/160_orbital_collectors.txt   the blueprint (verbatim game export)
 data/positions.csv                      all 160 collectors: ring, lat, lon, unit vector, xyz
 data/rings.json                         parsed summary (areas, ring stats, distances)
 tools/analyze_blueprint.py              parser + geometry report, stdlib only
+docs/img/ingame-gas-giant.jpg           in-game screenshot (placement proof)
 README.md                               this file
 README.zh-CN.md                         中文说明
 ```
 
 ## 7. Caveats
 
-* This is a **verbatim copy** taken from a live save where the 160 collectors were actually standing on one gas giant, so the layout is proven in practice as well as on paper. That save was modded; whether a strictly vanilla install accepts a 4-ring layout is **not** verified here. Worst case the paste reports a build error and nothing is spent.
+* **Verified in game.** The file was copied from a live save and pasted back onto a gas giant (御夫座 6 - 5) in 0.10.35 — the screenshot at the top is the result: 160 collectors standing in 4 rings.
+* BlueprintTweaks is **mandatory, not optional**. The engine itself refuses blueprints on gas giants (`planet.gasItems != null` → `EBuildCondition.Failure`). Keep `bpOnGasGiants = true`.
 * Community wikis still state "equatorial only, 40 per giant". Treat that as a description of the plain one-ring layout, not as an engine limit — the file in this repo proves four rings fit.
-* Keep `bpOnGasGiants = true`; without it the game will refuse the paste with a plain failure message.
+* All 160 collectors carry the same orbit radius (220.2), so nothing is stacked vertically and no ring shadows another.
 
 ## License
 
