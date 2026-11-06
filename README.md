@@ -11,8 +11,8 @@ A ready-to-paste blueprint plus the arithmetic that shows *why* 160 orbital coll
 | Collectors | **160** (item `2105`, model `117`) |
 | Rings | 4 — latitudes **0.0° / 7.2° / 14.4° / 21.6°** |
 | Per ring | **40**, every **9°** (10 grid cells) |
-| Orbit radius | **220.2** world units (`localOffset_z = 15.0`) |
-| Nearest-neighbour spacing | **32.13 – 32.58** units (mean 32.32) |
+| Orbit radius | **220.2 m** (`localOffset_z = 15.0`) |
+| Nearest-neighbour spacing | **32.13 – 32.58 m** (mean 32.32 m) |
 | Blueprint area | 1 area, 396 × 25 cells, 80 longitude segments |
 | File | [`blueprints/160_orbital_collectors.txt`](blueprints/160_orbital_collectors.txt) |
 
@@ -65,16 +65,17 @@ The game places 4 rings of 40; the first ring lands on the latitude you aim at, 
 
 | Quantity | Value |
 |---|---|
-| Planet radius `realRadius` | 200 |
+| Planet radius `realRadius` | 200 m |
+| Length unit | 1 game unit = **1 m** (metric) |
 | Longitude segments at the equator | 80 |
 | Grid cells per segment | 5 |
 | Cells per full circle | 80 × 5 = **400** |
 | Angular width of one cell | 360° / 400 = **0.9°** |
 | Latitude cell height | **0.9°** |
 | Orbital altitude from the blueprint | `z = 15.0` |
-| Orbit radius | `15.0 × 1.3333 + 0.2 + 200 =` **220.2** |
+| Orbit radius | `15.0 × 1.3333 + 0.2 + 200 =` **220.2 m** |
 
-The game stores buildings in polar grid coordinates: `localOffset_x` = longitude cells, `localOffset_y` = latitude cells, and the radius is recovered with `r = localOffset_z × 4⁄3 + 0.2 + realRadius`. All 160 collectors carry `z = 15.0`, so **every one of them sits on the same 220.2 orbit shell**.
+The game stores buildings in polar grid coordinates: `localOffset_x` = longitude cells, `localOffset_y` = latitude cells, and the radius is recovered with `r = localOffset_z × 4⁄3 + 0.2 + realRadius`. All 160 collectors carry `z = 15.0`, so **every one of them sits on the same 220.2 m orbit shell**.
 
 ### 4.2 Why one ring holds exactly 40
 
@@ -105,7 +106,7 @@ Four rings are stacked 8 cells apart in latitude and offset by half a step from 
 
 On a sphere of radius 220.2:
 
-| Metric | Value (world units) |
+| Metric | Value (m) |
 |---|---|
 | Ring 1 circumference | 1383.6 |
 | Ring 2 circumference | 1372.6 |
@@ -118,16 +119,16 @@ On a sphere of radius 220.2:
 **Why the half-step offset matters.** Without the 4.5° shift, the closest pair between two adjacent rings would be the straight north–south distance:
 
 ```
-2 × 220.2 × sin(7.2° / 2) = 27.66
+2 × 220.2 × sin(7.2° / 2) = 27.66 m
 ```
 
-27.66 < 34.55, so the shell would be pinched between rings while being stretched inside them. Shifting every second ring by 5 cells turns the nearest cross-ring pair into the diagonal
+27.66 m < 34.55 m, so the shell would be pinched between rings while being stretched inside them. Shifting every second ring by 5 cells turns the nearest cross-ring pair into the diagonal
 
 ```
-Δlat = 7.2°, Δlon = 4.5°  →  32.58
+Δlat = 7.2°, Δlon = 4.5°  →  32.58 m
 ```
 
-and the whole shell becomes almost perfectly uniform — every collector is between 32.13 and 32.58 units from its closest neighbour. That uniformity is the design, not luck.
+and the whole shell becomes almost perfectly uniform — every collector is between 32.13 and 32.58 m from its closest neighbour. That uniformity is the design, not luck.
 
 ### 4.5 Totals
 
@@ -173,18 +174,18 @@ payload version : 2
 areas           : [{'index': 0, 'parent': -1, 'tropic_anchor': 0, 'segments': 80, 'anchor_x': 0, 'anchor_y': 0, 'width': 396, 'height': 25}]
 buildings total : 160 | collectors: 160
 item ids        : [2105]
-orbit radius    : 220.200  (z offset 15.000, real radius 200.0)
+orbit radius    : 220.200 m  (z offset 15.000, real radius 200.0 m)
 grid            : 0.900 deg/cell, 400 cells per circle
 
 rings:
-  lat(deg)  count  first lon  step   circumference  neighbour
+  lat(deg)  count  first lon  step   circumference(m) neighbour(m)
      -0.0     40      0.00   [9.0]        1383.6     34.55
       7.2     40      4.50   [9.0]        1372.6     34.28
      14.4     40      0.00   [9.0]        1340.1     33.47
      21.6     40      4.50   [9.0]        1286.4     32.13
 
-nearest-neighbour distance: min 32.127  max 32.577  mean 32.323
-ring-to-ring minimum     : ['32.58', '32.43', '32.15']
+nearest-neighbour distance: min 32.127  max 32.577  mean 32.323  (m)
+ring-to-ring minimum (m) : ['32.58', '32.43', '32.15']
 ```
 
 Add `--csv positions.csv` for per-collector coordinates, `--json summary.json` for the machine-readable summary.
@@ -193,7 +194,7 @@ Add `--csv positions.csv` for per-collector coordinates, `--json summary.json` f
 
 ```
 blueprints/160_orbital_collectors.txt   the blueprint (verbatim game export)
-data/positions.csv                      all 160 collectors: ring, lat, lon, unit vector, xyz
+data/positions.csv                      all 160 collectors: ring, lat, lon, unit vector, xyz in m
 data/rings.json                         parsed summary (areas, ring stats, distances)
 tools/analyze_blueprint.py              parser + geometry report, stdlib only
 docs/img/ingame-gas-giant.jpg           in-game screenshot (placement proof)

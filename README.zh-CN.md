@@ -11,8 +11,8 @@
 | 采集器数量 | **160**（物品 `2105`，模型 `117`） |
 | 圈数 | 4 圈 —— 纬度 **0.0° / 7.2° / 14.4° / 21.6°** |
 | 每圈 | **40 台**，间隔 **9°**（10 个格点） |
-| 轨道半径 | **220.2**（`localOffset_z = 15.0`） |
-| 最近邻间距 | **32.13 – 32.58**（均值 32.32） |
+| 轨道半径 | **220.2 m**（`localOffset_z = 15.0`） |
+| 最近邻间距 | **32.13 – 32.58 m**（均值 32.32 m） |
 | 蓝图区域 | 1 个区域，396 × 25 格，80 个经度段 |
 | 文件 | [`blueprints/160_orbital_collectors.txt`](blueprints/160_orbital_collectors.txt) |
 
@@ -65,16 +65,17 @@
 
 | 量 | 值 |
 |---|---|
-| 行星半径 `realRadius` | 200 |
+| 行星半径 `realRadius` | 200 m |
+| 长度单位 | 1 游戏单位 = **1 m**（公制） |
 | 赤道经度段数 | 80 |
 | 每段格点数 | 5 |
 | 一整圈格点数 | 80 × 5 = **400** |
 | 单格角宽 | 360° / 400 = **0.9°** |
 | 单格纬向高度 | **0.9°** |
 | 蓝图里的轨道高度 | `z = 15.0` |
-| 轨道半径 | `15.0 × 1.3333 + 0.2 + 200 =` **220.2** |
+| 轨道半径 | `15.0 × 1.3333 + 0.2 + 200 =` **220.2 m** |
 
-游戏把建筑存成极坐标网格：`localOffset_x` 是经度格数、`localOffset_y` 是纬度格数，半径由 `r = localOffset_z × 4⁄3 + 0.2 + realRadius` 还原。160 台全部 `z = 15.0`，因此**都在同一个 220.2 的轨道壳上**，不存在高低差。
+游戏把建筑存成极坐标网格：`localOffset_x` 是经度格数、`localOffset_y` 是纬度格数，半径由 `r = localOffset_z × 4⁄3 + 0.2 + realRadius` 还原。160 台全部 `z = 15.0`，因此**都在同一个 220.2 m 的轨道壳上**，不存在高低差。
 
 ### 4.2 为什么一圈正好 40 台
 
@@ -105,7 +106,7 @@
 
 在半径 220.2 的球面上：
 
-| 指标 | 数值（世界单位） |
+| 指标 | 数值（m） |
 |---|---|
 | 第 1 圈周长 | 1383.6 |
 | 第 2 圈周长 | 1372.6 |
@@ -118,16 +119,16 @@
 **为什么要错开半格。** 如果不做 4.5° 错位，相邻两圈最近的一对就是正南正北的正交距离：
 
 ```
-2 × 220.2 × sin(7.2° / 2) = 27.66
+2 × 220.2 × sin(7.2° / 2) = 27.66 m
 ```
 
-27.66 明显小于圈内的 34.55——壳层会在圈与圈之间被"夹扁"。把每隔一圈平移 5 格之后，跨圈最近的一对变成对角关系：
+27.66 m 明显小于圈内的 34.55 m——壳层会在圈与圈之间被"夹扁"。把每隔一圈平移 5 格之后，跨圈最近的一对变成对角关系：
 
 ```
-Δ纬度 = 7.2°，Δ经度 = 4.5°  →  32.58
+Δ纬度 = 7.2°，Δ经度 = 4.5°  →  32.58 m
 ```
 
-于是整个壳层几乎是均匀的：任意一台采集器到它最近的邻居都在 32.13 ~ 32.58 之间。这是设计出来的，不是碰巧。
+于是整个壳层几乎是均匀的：任意一台采集器到它最近的邻居都在 32.13 ~ 32.58 m 之间。这是设计出来的，不是碰巧。
 
 ### 4.5 合计
 
@@ -173,18 +174,18 @@ areas           : [{'index': 0, 'parent': -1, 'tropic_anchor': 0, 'segments': 80
                     'anchor_x': 0, 'anchor_y': 0, 'width': 396, 'height': 25}]
 buildings total : 160 | collectors: 160
 item ids        : [2105]
-orbit radius    : 220.200  (z offset 15.000, real radius 200.0)
+orbit radius    : 220.200 m  (z offset 15.000, real radius 200.0 m)
 grid            : 0.900 deg/cell, 400 cells per circle
 
 rings:
-  lat(deg)  count  first lon  step   circumference  neighbour
+  lat(deg)  count  first lon  step   circumference(m) neighbour(m)
      -0.0     40      0.00   [9.0]        1383.6     34.55
       7.2     40      4.50   [9.0]        1372.6     34.28
      14.4     40      0.00   [9.0]        1340.1     33.47
      21.6     40      4.50   [9.0]        1286.4     32.13
 
-nearest-neighbour distance: min 32.127  max 32.577  mean 32.323
-ring-to-ring minimum     : ['32.58', '32.43', '32.15']
+nearest-neighbour distance: min 32.127  max 32.577  mean 32.323  (m)
+ring-to-ring minimum (m) : ['32.58', '32.43', '32.15']
 ```
 
 加 `--csv positions.csv` 导出每台采集器坐标，加 `--json summary.json` 导出机器可读汇总。
@@ -193,7 +194,7 @@ ring-to-ring minimum     : ['32.58', '32.43', '32.15']
 
 ```
 blueprints/160_orbital_collectors.txt   蓝图本体（游戏原样导出）
-data/positions.csv                      160 台的圈号、经纬度、单位向量、xyz
+data/positions.csv                      160 台的圈号、经纬度、单位向量、xyz（单位 m）
 data/rings.json                         解析汇总（区域、每圈统计、间距）
 tools/analyze_blueprint.py              解析 + 几何报告，仅用标准库
 docs/img/ingame-gas-giant.jpg           实机截图（摆放证明）

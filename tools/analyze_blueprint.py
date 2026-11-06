@@ -33,7 +33,7 @@ import sys
 REAL_RADIUS = 200.0          # gas giant surface radius (planet radius is 200 for every planet)
 GRID_SEGMENTS = 80           # longitude segments at the equator of a gas giant grid
 GRID_DEG = 360.0 / (GRID_SEGMENTS * 5)   # 0.9 deg per grid cell (5 cells per segment)
-HEIGHT_UNIT = 1.3333333      # z grid unit -> world units
+HEIGHT_UNIT = 1.3333333      # z grid unit -> meters (1 game unit = 1 m)
 HEIGHT_BIAS = 0.2
 
 
@@ -126,11 +126,11 @@ def main():
     print("areas           :", payload["areas"])
     print("buildings total :", len(payload["buildings"]), "| collectors:", len(collectors))
     print("item ids        :", sorted({b["item"] for b in payload["buildings"]}))
-    print("orbit radius    : %.3f  (z offset %.3f, real radius %.1f)" % (radius, z, REAL_RADIUS))
+    print("orbit radius    : %.3f m  (z offset %.3f, real radius %.1f m)" % (radius, z, REAL_RADIUS))
     print("grid            : %.3f deg/cell, %d cells per circle" % (GRID_DEG, GRID_SEGMENTS * 5))
     print()
     print("rings:")
-    print("  lat(deg)  count  first lon  step   circumference  neighbour")
+    print("  lat(deg)  count  first lon  step   circumference(m) neighbour(m)")
     for lat in sorted(rings):
         ring = sorted(rings[lat], key=lambda p: p["lon"])
         lons = [p["lon"] for p in ring]
@@ -141,16 +141,16 @@ def main():
 
     nn = [min(dist(p["pos"], q["pos"]) for j, q in enumerate(pts) if j != i) for i, p in enumerate(pts)]
     print()
-    print("nearest-neighbour distance: min %.3f  max %.3f  mean %.3f" % (min(nn), max(nn), sum(nn) / len(nn)))
+    print("nearest-neighbour distance: min %.3f  max %.3f  mean %.3f  (m)" % (min(nn), max(nn), sum(nn) / len(nn)))
     lat_list = sorted(rings)
     if len(lat_list) > 1:
         gaps = [min(dist(a["pos"], b["pos"]) for a in rings[x] for b in rings[y])
                 for x, y in zip(lat_list, lat_list[1:])]
-        print("ring-to-ring minimum     : %s" % ["%.2f" % g for g in gaps])
+        print("ring-to-ring minimum (m) : %s" % ["%.2f" % g for g in gaps])
 
     if args.csv:
         with open(args.csv, "w", encoding="utf-8", newline="") as f:
-            f.write("index,ring_lat_deg,lon_deg,nx,ny,nz,x,y,z\n")
+            f.write("index,ring_lat_deg,lon_deg,nx,ny,nz,x_m,y_m,z_m\n")
             for p in pts:
                 nx, ny, nz = (c / radius for c in p["pos"])
                 f.write("%d,%.3f,%.3f,%.6f,%.6f,%.6f,%.3f,%.3f,%.3f\n"
